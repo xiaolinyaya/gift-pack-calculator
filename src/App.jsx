@@ -4,12 +4,17 @@ import PackList from './components/PackList'
 import './App.css'
 
 const DEFAULT_PACKS = [
-  { id: 1, name: '6元宝石包', price: 6, gems: 60, giftCount: 0, giftGems: 0, type: 'normal' },
-  { id: 2, name: '30元宝石包', price: 30, gems: 360, giftCount: 0, giftGems: 0, type: 'normal' },
-  { id: 3, name: '68元宝石包', price: 68, gems: 880, giftCount: 0, giftGems: 0, type: 'normal' },
-  { id: 4, name: '128元宝石包', price: 128, gems: 1680, giftCount: 0, giftGems: 0, type: 'normal' },
-  { id: 5, name: '328元宝石包', price: 328, gems: 4480, giftCount: 0, giftGems: 0, type: 'normal' },
-  { id: 6, name: '648元宝石包', price: 648, gems: 8888, giftCount: 0, giftGems: 0, type: 'normal' },
+  { id: 1,  name: '$1.49',  price: 1.49,  gems: 500,   giftCount: 0, giftGems: 0, type: 'newbie' },
+  { id: 2,  name: '$199.9', price: 199.9, gems: 55000, giftCount: 0, giftGems: 0, type: 'first' },
+  { id: 3,  name: '$199.9', price: 199.9, gems: 50000, giftCount: 0, giftGems: 0, type: 'normal' },
+  { id: 4,  name: '$69.9',  price: 69.9,  gems: 16500, giftCount: 0, giftGems: 0, type: 'first' },
+  { id: 5,  name: '$38.9',  price: 38.9,  gems: 8800,  giftCount: 0, giftGems: 0, type: 'first' },
+  { id: 6,  name: '$19.9',  price: 19.9,  gems: 4400,  giftCount: 0, giftGems: 0, type: 'first' },
+  { id: 7,  name: '$69.9',  price: 69.9,  gems: 15000, giftCount: 0, giftGems: 0, type: 'normal' },
+  { id: 8,  name: '$38.9',  price: 38.9,  gems: 8000,  giftCount: 0, giftGems: 0, type: 'normal' },
+  { id: 9,  name: '$19.9',  price: 19.9,  gems: 4000,  giftCount: 0, giftGems: 0, type: 'normal' },
+  { id: 10, name: '$5.9',   price: 5.9,   gems: 1100,  giftCount: 0, giftGems: 0, type: 'first' },
+  { id: 11, name: '$5.9',   price: 5.9,   gems: 1000,  giftCount: 0, giftGems: 0, type: 'normal' },
 ]
 
 const STORAGE_KEY = 'gem-pack-data'
