@@ -1,60 +1,86 @@
 /* ====== App Layout ====== */
 .app {
-  padding: 24px 0 48px;
+  padding: 12px 0 32px;
 }
 
 .app-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .app-header h1 {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--text-h);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .app-header p {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .app-main {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 20px;
 }
 
 /* ====== Pack Form ====== */
 .pack-form {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.pack-form-previewing {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(124, 92, 252, 0.2);
+}
+
+.form-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .pack-form h2 {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-h);
-  margin-bottom: 16px;
+}
+
+.form-preview-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(124, 92, 252, 0.12);
+  padding: 2px 10px;
+  border-radius: 4px;
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .form-field label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -63,9 +89,10 @@
 .form-field select {
   background: var(--bg-input);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 12px;
+  border-radius: 6px;
+  padding: 5px 8px;
   color: var(--text-h);
+  font-size: 13px;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -80,18 +107,24 @@
   color: var(--text-muted);
 }
 
+.form-field input:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .form-actions {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 
 .btn-primary {
   background: var(--accent);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 8px 24px;
+  border-radius: 6px;
+  padding: 5px 20px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -105,8 +138,9 @@
   background: transparent;
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 24px;
+  border-radius: 6px;
+  padding: 5px 20px;
+  font-size: 13px;
   cursor: pointer;
   transition: border-color 0.2s;
 }
@@ -117,34 +151,34 @@
 
 /* ====== Pack List ====== */
 .pack-list h2 {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-h);
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .list-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 8px;
   flex-wrap: wrap;
 }
 
 .filter-group {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
 .filter-btn {
   background: var(--bg-input);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 12px;
+  border-radius: 4px;
+  padding: 2px 10px;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -168,10 +202,10 @@
 .sort-btn {
   background: var(--bg-input);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 14px;
+  border-radius: 4px;
+  padding: 2px 10px;
   color: var(--text);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s;
@@ -184,26 +218,27 @@
 
 .pack-list-empty {
   text-align: center;
-  padding: 48px 0;
+  padding: 32px 0;
   color: var(--text-muted);
+  font-size: 13px;
 }
 
 .pack-cards {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
 }
 
-/* ====== Pack Card ====== */
+/* ====== Pack Card (compact) ====== */
 .pack-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 20px;
+  border-radius: 8px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  transition: border-color 0.2s, background 0.2s;
+  gap: 10px;
+  transition: border-color 0.15s, background 0.15s;
 }
 
 .pack-card:hover {
@@ -212,19 +247,140 @@
 
 .pack-card-best {
   border-color: var(--gold);
-  box-shadow: 0 0 20px var(--gold-glow);
+  box-shadow: 0 0 12px var(--gold-glow);
 }
 
-.pack-rank {
-  font-size: 20px;
+.pack-card-preview {
+  border: 2px solid var(--accent);
+  background: rgba(124, 92, 252, 0.12);
+  box-shadow: 0 0 16px rgba(124, 92, 252, 0.35);
+  animation: preview-glow 2s ease-in-out infinite;
+}
+
+.pack-card-preview:hover {
+  background: rgba(124, 92, 252, 0.18);
+}
+
+.pack-card-preview .pack-rank {
+  color: var(--accent);
+}
+
+.pack-card-preview .unit-price-value {
+  color: var(--accent);
+}
+
+.tag-preview {
+  background: var(--accent);
+  color: #fff;
   font-weight: 700;
-  min-width: 42px;
+}
+
+.preview-hint {
+  background: rgba(124, 92, 252, 0.12);
+  border: 1px solid rgba(124, 92, 252, 0.3);
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-bottom: 6px;
+  color: var(--accent);
+  font-size: 13px;
+  text-align: center;
+}
+
+.preview-hint strong {
+  font-size: 15px;
+  color: #fff;
+  margin: 0 2px;
+}
+
+@keyframes preview-glow {
+  0%, 100% { box-shadow: 0 0 16px rgba(124, 92, 252, 0.35); }
+  50% { box-shadow: 0 0 24px rgba(124, 92, 252, 0.55); }
+}
+
+/* ====== Base Price Bar ====== */
+.base-price-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 5px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.base-price-bar label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.base-price-bar input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  color: var(--text-h);
+  font-size: 13px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.base-price-bar input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.btn-clear {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-clear:hover {
+  color: var(--text-h);
+  border-color: var(--text-muted);
+}
+
+/* ====== Save Badge ====== */
+.save-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.save-positive {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+}
+
+.save-negative {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+}
+
+/* ====== Card Inner (compact) ====== */
+.pack-rank {
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 32px;
   text-align: center;
   color: var(--text-muted);
 }
 
 .pack-card-best .pack-rank {
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .pack-card-top3 .pack-rank {
@@ -234,28 +390,33 @@
 .pack-info {
   flex: 1;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .pack-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 6px;
+  min-width: 120px;
 }
 
 .pack-name {
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-h);
+  white-space: nowrap;
 }
 
 .pack-tag {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 1px 6px;
+  border-radius: 3px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 .tag-normal { background: rgba(99, 102, 241, 0.15); color: var(--tag-normal); }
@@ -264,11 +425,13 @@
 .tag-newbie { background: rgba(52, 211, 153, 0.15); color: var(--tag-newbie); }
 
 .pack-unit-price {
-  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
 }
 
 .unit-price-value {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--green);
   font-variant-numeric: tabular-nums;
@@ -279,16 +442,16 @@
 }
 
 .unit-price-label {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--text-muted);
-  margin-left: 4px;
+  margin-left: 3px;
 }
 
 .pack-details {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 16px;
-  font-size: 13px;
+  gap: 2px 10px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -299,17 +462,16 @@
 
 .pack-actions {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .btn-icon {
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 6px;
-  padding: 4px 8px;
+  border-radius: 4px;
+  padding: 2px 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 13px;
   transition: background 0.2s;
 }
 
@@ -321,14 +483,11 @@
 /* ====== Responsive ====== */
 @media (max-width: 480px) {
   .form-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
-  .pack-card {
-    flex-wrap: wrap;
-  }
-  .pack-actions {
-    flex-direction: row;
-    width: 100%;
-    justify-content: flex-end;
+  .pack-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
   }
 }

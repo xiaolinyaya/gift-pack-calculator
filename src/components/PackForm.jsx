@@ -16,7 +16,23 @@ const emptyForm = {
   type: 'normal',
 }
 
-export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit }) {
+function buildPack(form) {
+  const price = parseFloat(form.price)
+  const gems = parseInt(form.gems)
+  if (!form.price || !form.gems || isNaN(price) || isNaN(gems) || price <= 0 || gems <= 0) {
+    return null
+  }
+  return {
+    name: form.name || '新宝石包',
+    price,
+    gems,
+    giftCount: form.giftCount ? parseInt(form.giftCount) : 0,
+    giftGems: form.giftGems ? parseInt(form.giftGems) : 0,
+    type: form.type,
+  }
+}
+
+export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit, onPreviewChange }) {
   const [form, setForm] = useState(emptyForm)
 
   useEffect(() => {
@@ -32,27 +48,38 @@ export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit })
     }
   }, [editingPack])
 
+  useEffect(() => {
+    if (editingPack) {
+      onPreviewChange(null)
+      return
+    }
+    const pack = buildPack(form)
+    onPreviewChange(pack ? { ...pack, id: '__preview__' } : null)
+  }, [form, editingPack])
+
   const handleChange = (field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }))
+    setForm(prev => {
+      const next = { ...prev, [field]: value }
+      // Auto-fill name as "$" + price
+      if (field === 'price') {
+        next.name = value ? `$${value}` : ''
+      }
+      return next
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.name || !form.price || !form.gems) return
+    if (!form.price || !form.gems) return
 
-    const pack = {
-      name: form.name,
-      price: parseFloat(form.price),
-      gems: parseInt(form.gems),
-      giftCount: form.giftCount ? parseInt(form.giftCount) : 0,
-      giftGems: form.giftGems ? parseInt(form.giftGems) : 0,
-      type: form.type,
-    }
+    const pack = buildPack(form)
+    if (!pack) return
 
     if (editingPack) {
       onUpdate({ ...pack, id: editingPack.id })
     } else {
       onAdd({ ...pack, id: Date.now() })
+      onPreviewChange(null)
     }
 
     setForm(emptyForm)
@@ -60,25 +87,20 @@ export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit })
 
   const handleCancel = () => {
     setForm(emptyForm)
+    onPreviewChange(null)
     onCancelEdit()
   }
 
-  const showGiftFields = form.type === 'event'
+  const isEvent = form.type === 'event'
+  const isPreviewing = !editingPack && buildPack(form) !== null
 
   return (
-    <form className="pack-form" onSubmit={handleSubmit}>
-      <h2>{editingPack ? '编辑宝石包' : '添加宝石包'}</h2>
+    <form className={`pack-form ${isPreviewing ? 'pack-form-previewing' : ''}`} onSubmit={handleSubmit}>
+      <div className="form-title-row">
+        <h2>{editingPack ? '编辑宝石包' : '添加宝石包'}</h2>
+        {isPreviewing && <span className="form-preview-badge">比价中 — 查看下方列表</span>}
+      </div>
       <div className="form-grid">
-        <div className="form-field">
-          <label>名称</label>
-          <input
-            type="text"
-            placeholder="如：6元宝石包"
-            value={form.name}
-            onChange={e => handleChange('name', e.target.value)}
-            required
-          />
-        </div>
         <div className="form-field">
           <label>类型</label>
           <select
@@ -113,30 +135,28 @@ export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit })
             required
           />
         </div>
-        {showGiftFields && (
-          <>
-            <div className="form-field">
-              <label>礼品数量</label>
-              <input
-                type="number"
-                min="0"
-                placeholder="0"
-                value={form.giftCount}
-                onChange={e => handleChange('giftCount', e.target.value)}
-              />
-            </div>
-            <div className="form-field">
-              <label>单个礼品折算宝石数</label>
-              <input
-                type="number"
-                min="0"
-                placeholder="0"
-                value={form.giftGems}
-                onChange={e => handleChange('giftGems', e.target.value)}
-              />
-            </div>
-          </>
-        )}
+        <div className="form-field">
+          <label>礼品数量</label>
+          <input
+            type="number"
+            min="0"
+            placeholder={isEvent ? '0' : '-'}
+            value={isEvent ? form.giftCount : ''}
+            onChange={e => handleChange('giftCount', e.target.value)}
+            disabled={!isEvent}
+          />
+        </div>
+        <div className="form-field">
+          <label>礼品折算宝石数</label>
+          <input
+            type="number"
+            min="0"
+            placeholder={isEvent ? '0' : '-'}
+            value={isEvent ? form.giftGems : ''}
+            onChange={e => handleChange('giftGems', e.target.value)}
+            disabled={!isEvent}
+          />
+        </div>
       </div>
       <div className="form-actions">
         <button type="submit" className="btn-primary">

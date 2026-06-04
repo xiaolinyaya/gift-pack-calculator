@@ -25,6 +25,7 @@ function loadPacks() {
 function App() {
   const [packs, setPacks] = useState(loadPacks)
   const [editingPack, setEditingPack] = useState(null)
+  const [previewPack, setPreviewPack] = useState(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(packs))
@@ -65,9 +66,11 @@ function App() {
           editingPack={editingPack}
           onUpdate={handleUpdate}
           onCancelEdit={handleCancelEdit}
+          onPreviewChange={setPreviewPack}
         />
         <PackList
           packs={packs}
+          previewPack={previewPack}
           onEdit={handleEdit}
           onDelete={handleDelete}
         />

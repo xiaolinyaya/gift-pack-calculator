@@ -9,21 +9,29 @@ const TYPE_FILTERS = [
   { value: 'newbie', label: '新手' },
 ]
 
-export default function PackList({ packs, onEdit, onDelete }) {
+function calcUnitPrice(pack) {
+  const totalGems = pack.gems + pack.giftCount * pack.giftGems
+  const unitPrice = totalGems > 0 ? pack.price / totalGems : Infinity
+  return { ...pack, totalGems, unitPrice }
+}
+
+export default function PackList({ packs, previewPack, onEdit, onDelete }) {
   const [typeFilter, setTypeFilter] = useState('all')
   const [ascending, setAscending] = useState(true)
+  const [basePrice, setBasePrice] = useState('')
 
   const filtered = packs.filter(p => typeFilter === 'all' || p.type === typeFilter)
 
-  const sorted = [...filtered]
-    .map(pack => {
-      const totalGems = pack.gems + pack.giftCount * pack.giftGems
-      const unitPrice = totalGems > 0 ? pack.price / totalGems : Infinity
-      return { ...pack, totalGems, unitPrice }
-    })
+  // Preview pack always participates regardless of filter
+  const allItems = previewPack ? [...filtered, previewPack] : filtered
+
+  const sorted = allItems
+    .map(calcUnitPrice)
     .sort((a, b) => ascending ? a.unitPrice - b.unitPrice : b.unitPrice - a.unitPrice)
 
-  if (packs.length === 0) {
+  const isEmpty = packs.length === 0 && !previewPack
+
+  if (isEmpty) {
     return (
       <div className="pack-list-empty">
         <p>暂无宝石包，请点击上方添加</p>
@@ -54,6 +62,28 @@ export default function PackList({ packs, onEdit, onDelete }) {
           {ascending ? '↑ 单价低→高' : '↓ 单价高→低'}
         </button>
       </div>
+      <div className="base-price-bar">
+        <label>基准单价（$/宝石）</label>
+        <input
+          type="number"
+          step="0.0001"
+          min="0"
+          placeholder="输入基准值后显示Value"
+          value={basePrice}
+          onChange={e => setBasePrice(e.target.value)}
+        />
+        {basePrice && (
+          <button className="btn-clear" onClick={() => setBasePrice('')}>清除</button>
+        )}
+      </div>
+      {previewPack && sorted.length > 0 && (() => {
+        const previewRank = sorted.findIndex(p => p.id === '__preview__') + 1
+        return previewRank > 0 ? (
+          <div className="preview-hint">
+            比价中的商品当前排在第 <strong>{previewRank}</strong> 位（共 {sorted.length} 个）
+          </div>
+        ) : null
+      })()}
       {sorted.length === 0 ? (
         <div className="pack-list-empty">
           <p>该类型下暂无宝石包</p>
@@ -65,6 +95,8 @@ export default function PackList({ packs, onEdit, onDelete }) {
               key={pack.id}
               pack={pack}
               rank={index + 1}
+              isPreview={pack.id === '__preview__'}
+              basePrice={basePrice ? parseFloat(basePrice) : null}
               onEdit={onEdit}
               onDelete={onDelete}
             />
