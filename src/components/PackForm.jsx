@@ -18,16 +18,20 @@ const emptyForm = {
 
 function buildPack(form) {
   const price = parseFloat(form.price)
-  const gems = parseInt(form.gems)
-  if (!form.price || !form.gems || isNaN(price) || isNaN(gems) || price <= 0 || gems <= 0) {
+  const gems = form.gems ? parseInt(form.gems) : 0
+  const giftCount = form.giftCount ? parseInt(form.giftCount) : 0
+  const giftGems = form.giftGems ? parseInt(form.giftGems) : 0
+  const totalGems = gems + giftCount * giftGems
+
+  if (!form.price || isNaN(price) || price <= 0 || totalGems <= 0) {
     return null
   }
   return {
     name: form.name || '新宝石包',
     price,
     gems,
-    giftCount: form.giftCount ? parseInt(form.giftCount) : 0,
-    giftGems: form.giftGems ? parseInt(form.giftGems) : 0,
+    giftCount,
+    giftGems,
     type: form.type,
   }
 }
@@ -70,7 +74,7 @@ export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit, o
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!form.price || !form.gems) return
+    if (!form.price) return
 
     const pack = buildPack(form)
     if (!pack) return
@@ -132,7 +136,6 @@ export default function PackForm({ onAdd, editingPack, onUpdate, onCancelEdit, o
             placeholder="0"
             value={form.gems}
             onChange={e => handleChange('gems', e.target.value)}
-            required
           />
         </div>
         <div className="form-field">
